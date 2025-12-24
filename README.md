@@ -1,6 +1,11 @@
 # LeadPulse AI - B2B Sales Intelligence Platform
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/takeshi1219/LeadPulse-AI&root-directory=apps/web)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/takeshi1219/LeadPulse-AI&root-directory=services/ai-engine)
+
 LeadPulse AI is a modern, AI-powered B2B sales intelligence platform that helps businesses identify, qualify, and convert high-value prospects.
+
+> **📖 [Deployment Guide](./DEPLOYMENT.md)** - Full instructions for deploying to production
 
 ## Features
 
