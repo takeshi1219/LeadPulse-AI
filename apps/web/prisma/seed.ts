@@ -6,18 +6,28 @@ const prisma = new PrismaClient()
 async function main() {
   console.log("Seeding database...")
 
-  // Create demo organization
-  const org = await prisma.organization.create({
-    data: {
+  // Create or update demo organization
+  const org = await prisma.organization.upsert({
+    where: { name: "Acme Inc." },
+    update: {},
+    create: {
       name: "Acme Inc.",
       plan: "PRO",
     },
   })
 
-  // Create demo user
+  console.log("Organization ready:", org.name)
+
+  // Create or update demo user
   const hashedPassword = await bcrypt.hash("demo123", 12)
-  const user = await prisma.user.create({
-    data: {
+  const user = await prisma.user.upsert({
+    where: { email: "demo@leadpulse.ai" },
+    update: {
+      password: hashedPassword,
+      name: "Demo User",
+      role: "ADMIN",
+    },
+    create: {
       email: "demo@leadpulse.ai",
       password: hashedPassword,
       name: "Demo User",
@@ -26,9 +36,9 @@ async function main() {
     },
   })
 
-  console.log("Created user:", user.email)
+  console.log("User ready:", user.email)
 
-  // Create demo leads
+  // Create demo leads (skip if they already exist)
   const leads = [
     {
       companyName: "TechCorp Industries",
@@ -107,29 +117,51 @@ async function main() {
     },
   ]
 
+  let createdLeads = 0
   for (const lead of leads) {
-    await prisma.lead.create({ data: lead })
+    // Check if lead already exists
+    const existing = await prisma.lead.findFirst({
+      where: {
+        companyName: lead.companyName,
+        organizationId: org.id,
+      },
+    })
+
+    if (!existing) {
+      await prisma.lead.create({ data: lead })
+      createdLeads++
+    }
   }
 
-  console.log(`Created ${leads.length} demo leads`)
+  console.log(`Leads ready: ${createdLeads} new, ${leads.length - createdLeads} existing`)
 
-  // Create demo campaign
-  const campaign = await prisma.campaign.create({
-    data: {
+  // Create or update demo campaign
+  const existingCampaign = await prisma.campaign.findFirst({
+    where: {
       name: "Q4 Enterprise Outreach",
-      description: "Targeting enterprise companies for Q4 push",
-      status: "ACTIVE",
       organizationId: org.id,
-      metrics: JSON.stringify({
-        sent: 450,
-        opened: 198,
-        replied: 45,
-        converted: 12,
-      }),
     },
   })
 
-  console.log("Created campaign:", campaign.name)
+  if (!existingCampaign) {
+    await prisma.campaign.create({
+      data: {
+        name: "Q4 Enterprise Outreach",
+        description: "Targeting enterprise companies for Q4 push",
+        status: "ACTIVE",
+        organizationId: org.id,
+        metrics: JSON.stringify({
+          sent: 450,
+          opened: 198,
+          replied: 45,
+          converted: 12,
+        }),
+      },
+    })
+    console.log("Created campaign: Q4 Enterprise Outreach")
+  } else {
+    console.log("Campaign already exists: Q4 Enterprise Outreach")
+  }
 
   console.log("Seeding complete!")
 }
@@ -142,4 +174,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect()
   })
-
