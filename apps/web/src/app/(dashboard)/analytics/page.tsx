@@ -191,7 +191,7 @@ export default function AnalyticsPage() {
                         border: "1px solid hsl(var(--border))",
                         borderRadius: "8px",
                       }}
-                      formatter={(value: number) => [`$${value.toLocaleString()}`, ""]}
+                      formatter={(value) => [`$${(value as number)?.toLocaleString() ?? 0}`, ""]}
                     />
                     <Area
                       type="monotone"
@@ -240,7 +240,7 @@ export default function AnalyticsPage() {
                         border: "1px solid hsl(var(--border))",
                         borderRadius: "8px",
                       }}
-                      formatter={(value: number) => [`${value}%`, ""]}
+                      formatter={(value) => [`${value}%`, ""]}
                     />
                     <Legend />
                   </PieChart>
