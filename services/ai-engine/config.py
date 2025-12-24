@@ -26,7 +26,11 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         os.getenv("FRONTEND_URL", ""),
+        os.getenv("CORS_ORIGINS", ""),
     ]
+    
+    # Allow all origins in production (Vercel preview URLs vary)
+    cors_allow_all: bool = os.getenv("CORS_ALLOW_ALL", "true").lower() == "true"
     
     # Port for Railway
     port: int = int(os.getenv("PORT", "8000"))

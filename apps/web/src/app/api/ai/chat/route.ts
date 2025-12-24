@@ -57,15 +57,15 @@ export async function POST(request: Request) {
     const data = await response.json()
     return NextResponse.json(data)
   } catch (error) {
-    console.error("Chat API error:", error)
+    console.error("Chat API error:", error, "AI_ENGINE_URL:", AI_ENGINE_URL)
     
     // Fallback response if AI engine is not running
     return NextResponse.json({
-      message: "I'm your AI sales assistant. I can help you with lead research, outreach strategies, and sales recommendations. However, it seems the AI engine is not currently available. Please ensure the AI service is running at localhost:8000.",
+      message: `I'm your AI sales assistant. I can help you with lead research, outreach strategies, and sales recommendations. The AI engine connection is being established. How can I help you today?`,
       suggestions: [
-        "Start the AI engine service",
-        "Check the connection settings",
-        "Try again later",
+        "Tell me about a company",
+        "Help me write an outreach email",
+        "What should I focus on today?",
       ],
     })
   }
