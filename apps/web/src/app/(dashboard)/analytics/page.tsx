@@ -268,7 +268,7 @@ export default function AnalyticsPage() {
                       border: "1px solid hsl(var(--border))",
                       borderRadius: "8px",
                     }}
-                    formatter={(value: number, name: string) => [
+                    formatter={(value, name) => [
                       name === "count" ? value : `${value}%`,
                       name === "count" ? "Leads" : "Conversion Rate",
                     ]}
