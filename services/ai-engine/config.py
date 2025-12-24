@@ -14,17 +14,20 @@ class Settings(BaseSettings):
     api_prefix: str = "/api"
     
     # OpenAI
-    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+    openai_api_key: str = ""
     openai_model: str = "gpt-4-turbo-preview"
     
     # Redis (optional caching)
-    redis_url: str = os.getenv("REDIS_URL", "")
+    redis_url: str = ""
     
     # CORS
     cors_origins: list[str] = ["http://localhost:3000", "http://127.0.0.1:3000"]
     
-    class Config:
-        env_file = ".env"
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "extra": "ignore",
+    }
 
 
 settings = Settings()
