@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Enums (using strings since SQLite doesn't support native enums)
+// Role: ADMIN, MEMBER
+// Plan: FREE, PRO, ENTERPRISE
+// LeadStage: NEW, CONTACTED, QUALIFIED, PROPOSAL, WON, LOST
+// CampaignStatus: DRAFT, ACTIVE, PAUSED, COMPLETED
+
+model User {
+  id             String       @id @default(cuid())
+  email          String       @unique
+  password       String
+  name           String?
+  image          String?
+  role           String       @default("MEMBER")
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+}
+
+model Organization {
+  id        String     @id @default(cuid())
+  name      String
+  plan      String     @default("FREE")
+  settings  String?    // JSON string for settings
+  users     User[]
+  leads     Lead[]
+  campaigns Campaign[]
+  apiKeys   ApiKey[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Lead {
+  id             String        @id @default(cuid())
+  companyName    String
+  contactName    String?
+  email          String?
+  phone          String?
+  website        String?
+  industry       String?
+  employeeCount  Int?
+  revenue        String?
+  location       String?
+  description    String?
+  linkedIn       String?
+  score          Int           @default(0)
+  stage          String        @default("NEW")
+  source         String?
+  tags           String?       // JSON array string
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  interactions   Interaction[]
+  aiInsights     AIInsight[]
+  campaignLeads  CampaignLead[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId])
+  @@index([stage])
+  @@index([score])
+}
+
+model Interaction {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type      String   // email, call, meeting, note, linkedin
+  content   String
+  metadata  String?  // JSON string for extra data
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([leadId])
+}
+
+model AIInsight {
+  id         String   @id @default(cuid())
+  leadId     String
+  lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type       String   // scoring, research, outreach, recommendation
+  content    String   // JSON string with structured insight data
+  confidence Float    @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([leadId])
+  @@index([type])
+}
+
+model Campaign {
+  id             String         @id @default(cuid())
+  name           String
+  description    String?
+  status         String         @default("DRAFT")
+  organizationId String
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  metrics        String?        // JSON string for campaign metrics
+  settings       String?        // JSON string for campaign settings
+  campaignLeads  CampaignLead[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+model CampaignLead {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  leadId     String
+  lead       Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  status     String   @default("PENDING")
+  sentAt     DateTime?
+  openedAt   DateTime?
+  repliedAt  DateTime?
+  createdAt  DateTime @default(now())
+
+  @@unique([campaignId, leadId])
+  @@index([campaignId])
+  @@index([leadId])
+}
+
+model ApiKey {
+  id             String       @id @default(cuid())
+  name           String
+  key            String       @unique
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  lastUsedAt     DateTime?
+  expiresAt      DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([organizationId])
+  @@index([key])
+}
+
+model ChatMessage {
+  id             String   @id @default(cuid())
+  sessionId      String
+  role           String   // user, assistant
+  content        String
+  leadId         String?  // Context lead if any
+  organizationId String
+  createdAt      DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([organizationId])
+}
