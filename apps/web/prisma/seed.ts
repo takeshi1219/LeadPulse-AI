@@ -6,17 +6,22 @@ const prisma = new PrismaClient()
 async function main() {
   console.log("Seeding database...")
 
-  // Create or update demo organization
-  const org = await prisma.organization.upsert({
+  // Create or find demo organization
+  let org = await prisma.organization.findFirst({
     where: { name: "Acme Inc." },
-    update: {},
-    create: {
-      name: "Acme Inc.",
-      plan: "PRO",
-    },
   })
 
-  console.log("Organization ready:", org.name)
+  if (!org) {
+    org = await prisma.organization.create({
+      data: {
+        name: "Acme Inc.",
+        plan: "PRO",
+      },
+    })
+    console.log("Created organization:", org.name)
+  } else {
+    console.log("Organization exists:", org.name)
+  }
 
   // Create or update demo user
   const hashedPassword = await bcrypt.hash("demo123", 12)
