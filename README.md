@@ -4,7 +4,7 @@
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/takeshi1219/LeadPulse-AI&root-directory=services/ai-engine)
 
 LeadPulse AI is a modern, AI-powered B2B sales intelligence platform that helps businesses identify, qualify, and convert high-value prospects.
-
+![App Screenshot](https://github.com/takeshi1219/LeadPulse-AI/blob/main/LeadPulseAI.png)
 > **📖 [Deployment Guide](./DEPLOYMENT.md)** - Full instructions for deploying to production
 
 ## Features
