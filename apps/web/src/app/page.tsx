@@ -19,27 +19,40 @@ import {
   Zap,
   Play,
   Loader2,
-  ImageIcon,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-// AI Image Component with Nano Banana Pro generation
+// Beautiful gradient backgrounds for each section (fallback when AI not available)
+const gradientBackgrounds = [
+  "from-indigo-600 via-purple-600 to-pink-500",
+  "from-cyan-500 via-blue-600 to-indigo-600",
+  "from-emerald-500 via-teal-500 to-cyan-500",
+  "from-orange-500 via-red-500 to-pink-500",
+  "from-violet-500 via-purple-500 to-fuchsia-500",
+  "from-amber-500 via-orange-500 to-red-500",
+]
+
+// AI Image Component with Nano Banana Pro generation + beautiful fallbacks
 function AIGeneratedImage({
   prompt,
   alt,
   className = "",
   priority = false,
+  gradientIndex = 0,
 }: {
   prompt: string
   alt: string
   className?: string
   priority?: boolean
+  gradientIndex?: number
 }) {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
+
+  const gradient = gradientBackgrounds[gradientIndex % gradientBackgrounds.length]
 
   useEffect(() => {
     const generateImage = async () => {
@@ -53,7 +66,11 @@ function AIGeneratedImage({
 
         if (!response.ok) throw new Error("Failed")
         const data = await response.json()
-        setImageUrl(data.image)
+        if (data.image) {
+          setImageUrl(data.image)
+        } else {
+          setError(true)
+        }
       } catch {
         setError(true)
       } finally {
@@ -61,6 +78,7 @@ function AIGeneratedImage({
       }
     }
 
+    // Only try to generate if API is likely available
     if (priority) {
       generateImage()
     } else {
@@ -69,32 +87,36 @@ function AIGeneratedImage({
     }
   }, [prompt, priority])
 
-  if (loading) {
+  // Beautiful fallback design with animated gradient
+  if (loading || error || !imageUrl) {
     return (
-      <div className={`${className} relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900/50 via-purple-900/50 to-pink-900/50`}>
-        <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm">
-          <div className="flex flex-col items-center gap-3">
-            <div className="relative">
-              <Loader2 className="h-10 w-10 animate-spin text-white/60" />
-              <Sparkles className="absolute -right-1 -top-1 h-4 w-4 animate-pulse text-yellow-400" />
-            </div>
-            <span className="text-sm font-medium text-white/70">Creating with AI...</span>
-          </div>
+      <div className={`${className} group relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient}`}>
+        {/* Animated mesh overlay */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_40%)]" />
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer" />
-      </div>
-    )
-  }
-
-  if (error || !imageUrl) {
-    return (
-      <div className={`${className} relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950`}>
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        
+        {/* Floating shapes */}
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-white/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
+        
+        {/* Content overlay */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-2 text-slate-500">
-            <ImageIcon className="h-16 w-16" />
-            <span className="text-sm">{alt}</span>
+          <div className="text-center px-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
+              <Sparkles className="h-4 w-4 text-yellow-300" />
+              <span className="text-sm font-medium text-white/90">AI Enhanced</span>
+            </div>
+            <h3 className="text-xl font-bold text-white/90 max-w-xs">{alt}</h3>
           </div>
         </div>
+        
+        {/* Shine effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
       </div>
     )
   }
@@ -354,6 +376,7 @@ export default function LandingPage() {
                   alt="AI-Powered Sales Dashboard"
                   className="aspect-[4/3] w-full shadow-2xl shadow-indigo-500/20"
                   priority
+                  gradientIndex={0}
                 />
                 {/* Floating elements */}
                 <div className="absolute -left-4 top-1/4 rounded-xl bg-slate-900/90 backdrop-blur-md p-4 shadow-xl border border-white/10 animate-float">
@@ -461,6 +484,7 @@ export default function LandingPage() {
                     prompt={feature.imagePrompt}
                     alt={feature.title}
                     className="h-40 w-full"
+                    gradientIndex={index}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
                 </div>
@@ -535,6 +559,7 @@ export default function LandingPage() {
                     prompt={item.imagePrompt}
                     alt={item.title}
                     className="aspect-video w-full mb-6"
+                    gradientIndex={index + 1}
                   />
                   
                   <div className={`mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg`}>
