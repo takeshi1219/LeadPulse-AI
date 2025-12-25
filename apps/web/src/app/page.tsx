@@ -84,7 +84,6 @@ function HeroImage({
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
     </div>
   )
 }
@@ -112,7 +111,6 @@ function FeatureImage({
         className={`h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
     </div>
   )
 }
@@ -670,7 +668,7 @@ export default function LandingPage() {
                 alt="Success"
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/85 via-purple-900/75 to-indigo-900/85" />
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/60 via-purple-900/50 to-indigo-900/60" />
             </div>
             
             <div className="relative p-12 md:p-20">
