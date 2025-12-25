@@ -25,23 +25,24 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 // Professional stock images for each section (Unsplash - free to use)
+// Using people-focused, bright, high-quality business images
 const stockImages = {
-  hero: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80", // Team collaboration
-  showcase: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80", // Modern office with screens
+  hero: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=1200&q=80", // Business team celebrating
+  showcase: "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=1200&q=80", // Modern tech workspace
   features: [
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", // Analytics dashboard
-    "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80", // AI/Robot concept
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // Data insights
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80", // Team working
-    "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&q=80", // Email/Outreach
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80", // Team working on laptops
+    "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=800&q=80", // AI robot assistant
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", // Data analytics screen
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // Charts and graphs
+    "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&q=80", // Person typing email
     "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80", // Team collaboration
   ],
   howItWorks: [
-    "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80", // Data import
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // AI analysis
-    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80", // Business meeting
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80", // Professional woman working
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80", // Team analyzing data  
+    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80", // Business meeting handshake
   ],
-  cta: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80", // Success/celebration
+  cta: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80", // Happy team celebrating
 }
 
 // Image component with loading states and real photos
@@ -84,7 +85,7 @@ function HeroImage({
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
     </div>
   )
 }
@@ -112,7 +113,7 @@ function FeatureImage({
         className={`h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         onLoad={() => setLoaded(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
     </div>
   )
 }
@@ -670,7 +671,7 @@ export default function LandingPage() {
                 alt="Success"
                 className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/95 via-purple-900/90 to-indigo-900/95" />
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/85 via-purple-900/75 to-indigo-900/85" />
             </div>
             
             <div className="relative p-12 md:p-20">
