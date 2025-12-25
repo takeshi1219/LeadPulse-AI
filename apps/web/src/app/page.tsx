@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import Image from "next/image"
 import {
   ArrowRight,
   BarChart3,
@@ -18,7 +18,6 @@ import {
   Users,
   Zap,
   Play,
-  Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -44,51 +43,33 @@ const stockImages = {
   cta: "/images/cta.jpg", // Happy team celebrating
 }
 
-// Image component with loading states and real photos
+// Optimized Image component using Next.js Image
 function HeroImage({
   src,
   alt,
   className = "",
+  priority = false,
 }: {
   src: string
   alt: string
   className?: string
+  priority?: boolean
 }) {
-  const [loaded, setLoaded] = useState(false)
-  const [error, setError] = useState(false)
-
-  if (error) {
-    return (
-      <div className={`${className} relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500`}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center px-8">
-            <Sparkles className="h-12 w-12 text-white/50 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white/90">{alt}</h3>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className={`${className} group relative overflow-hidden rounded-2xl bg-slate-800`}>
-      {!loaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-800">
-          <Loader2 className="h-8 w-8 animate-spin text-white/40" />
-        </div>
-      )}
-      <img
+      <Image
         src={src}
         alt={alt}
-        className={`h-full w-full object-cover transition-all duration-700 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+        className="object-cover transition-all duration-700 group-hover:scale-105"
+        priority={priority}
       />
     </div>
   )
 }
 
-// Feature card image component
+// Optimized Feature card image component
 function FeatureImage({
   src,
   alt,
@@ -98,18 +79,14 @@ function FeatureImage({
   alt: string
   className?: string
 }) {
-  const [loaded, setLoaded] = useState(false)
-
   return (
     <div className={`${className} relative overflow-hidden bg-slate-800`}>
-      {!loaded && (
-        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-slate-700 to-slate-800" />
-      )}
-      <img
+      <Image
         src={src}
         alt={alt}
-        className={`h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-        onLoad={() => setLoaded(true)}
+        fill
+        sizes="(max-width: 768px) 100vw, 400px"
+        className="object-cover"
       />
     </div>
   )
@@ -347,6 +324,7 @@ export default function LandingPage() {
                   src={stockImages.hero}
                   alt="AI-Powered Sales Dashboard"
                   className="aspect-[4/3] w-full shadow-2xl shadow-indigo-500/20"
+                  priority
                 />
                 {/* Floating elements */}
                 <div className="absolute -left-4 top-1/4 rounded-xl bg-slate-900/90 backdrop-blur-md p-4 shadow-xl border border-white/10 animate-float">
@@ -663,10 +641,12 @@ export default function LandingPage() {
           <div className="relative overflow-hidden rounded-3xl">
             {/* Background Image */}
             <div className="absolute inset-0">
-              <img
+              <Image
                 src={stockImages.cta}
                 alt="Success"
-                className="h-full w-full object-cover"
+                fill
+                sizes="100vw"
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/60 via-purple-900/50 to-indigo-900/60" />
             </div>
