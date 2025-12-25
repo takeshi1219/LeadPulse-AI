@@ -24,115 +24,95 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-// Beautiful gradient backgrounds for each section (fallback when AI not available)
-const gradientBackgrounds = [
-  "from-indigo-600 via-purple-600 to-pink-500",
-  "from-cyan-500 via-blue-600 to-indigo-600",
-  "from-emerald-500 via-teal-500 to-cyan-500",
-  "from-orange-500 via-red-500 to-pink-500",
-  "from-violet-500 via-purple-500 to-fuchsia-500",
-  "from-amber-500 via-orange-500 to-red-500",
-]
+// Professional stock images for each section (Unsplash - free to use)
+const stockImages = {
+  hero: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80", // Team collaboration
+  showcase: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80", // Modern office with screens
+  features: [
+    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", // Analytics dashboard
+    "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=800&q=80", // AI/Robot concept
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // Data insights
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80", // Team working
+    "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=800&q=80", // Email/Outreach
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80", // Team collaboration
+  ],
+  howItWorks: [
+    "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80", // Data import
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // AI analysis
+    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80", // Business meeting
+  ],
+  cta: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&q=80", // Success/celebration
+}
 
-// AI Image Component with Nano Banana Pro generation + beautiful fallbacks
-function AIGeneratedImage({
-  prompt,
+// Image component with loading states and real photos
+function HeroImage({
+  src,
   alt,
   className = "",
-  priority = false,
-  gradientIndex = 0,
 }: {
-  prompt: string
+  src: string
   alt: string
   className?: string
-  priority?: boolean
-  gradientIndex?: number
 }) {
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loaded, setLoaded] = useState(false)
   const [error, setError] = useState(false)
 
-  const gradient = gradientBackgrounds[gradientIndex % gradientBackgrounds.length]
-
-  useEffect(() => {
-    const generateImage = async () => {
-      try {
-        setLoading(true)
-        const response = await fetch("/api/ai/generate-image", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, aspectRatio: "16:9" }),
-        })
-
-        if (!response.ok) throw new Error("Failed")
-        const data = await response.json()
-        if (data.image) {
-          setImageUrl(data.image)
-        } else {
-          setError(true)
-        }
-      } catch {
-        setError(true)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    // Only try to generate if API is likely available
-    if (priority) {
-      generateImage()
-    } else {
-      const timer = setTimeout(generateImage, 100)
-      return () => clearTimeout(timer)
-    }
-  }, [prompt, priority])
-
-  // Beautiful fallback design with animated gradient
-  if (loading || error || !imageUrl) {
+  if (error) {
     return (
-      <div className={`${className} group relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient}`}>
-        {/* Animated mesh overlay */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.3),transparent_40%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.2),transparent_40%)]" />
-        </div>
-        
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
-        
-        {/* Floating shapes */}
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-white/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: "1s" }} />
-        
-        {/* Content overlay */}
+      <div className={`${className} relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500`}>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center px-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
-              <Sparkles className="h-4 w-4 text-yellow-300" />
-              <span className="text-sm font-medium text-white/90">AI Enhanced</span>
-            </div>
-            <h3 className="text-xl font-bold text-white/90 max-w-xs">{alt}</h3>
+            <Sparkles className="h-12 w-12 text-white/50 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-white/90">{alt}</h3>
           </div>
         </div>
-        
-        {/* Shine effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
       </div>
     )
   }
 
   return (
-    <div className={`${className} group relative overflow-hidden rounded-2xl`}>
+    <div className={`${className} group relative overflow-hidden rounded-2xl bg-slate-800`}>
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-slate-800">
+          <Loader2 className="h-8 w-8 animate-spin text-white/40" />
+        </div>
+      )}
       <img
-        src={imageUrl}
+        src={src}
         alt={alt}
-        className="h-full w-full object-cover transition-all duration-700 group-hover:scale-105"
+        className={`h-full w-full object-cover transition-all duration-700 group-hover:scale-105 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white/80 backdrop-blur-md">
-        <Sparkles className="h-3 w-3 text-yellow-400" />
-        AI Generated
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+    </div>
+  )
+}
+
+// Feature card image component
+function FeatureImage({
+  src,
+  alt,
+  className = "",
+}: {
+  src: string
+  alt: string
+  className?: string
+}) {
+  const [loaded, setLoaded] = useState(false)
+
+  return (
+    <div className={`${className} relative overflow-hidden bg-slate-800`}>
+      {!loaded && (
+        <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-slate-700 to-slate-800" />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`h-full w-full object-cover transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setLoaded(true)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
     </div>
   )
 }
@@ -144,7 +124,6 @@ const features = [
     description:
       "Automatically score and prioritize leads using advanced machine learning algorithms that analyze engagement patterns and buying signals.",
     gradient: "from-orange-500 to-red-600",
-    imagePrompt: "Abstract visualization of data analytics with glowing neural network nodes and scoring metrics, futuristic dark theme",
   },
   {
     icon: Bot,
@@ -152,7 +131,6 @@ const features = [
     description:
       "Get instant answers, generate personalized outreach, and receive AI-powered recommendations tailored to each prospect.",
     gradient: "from-cyan-500 to-blue-600",
-    imagePrompt: "Friendly AI assistant robot with holographic interface, modern minimalist design, blue glow",
   },
   {
     icon: Lightbulb,
@@ -160,7 +138,6 @@ const features = [
     description:
       "Uncover hidden opportunities with AI-generated insights about companies, decision-makers, and optimal engagement timing.",
     gradient: "from-yellow-500 to-orange-600",
-    imagePrompt: "Lightbulb made of glowing data streams and insights, creative visualization on dark background",
   },
   {
     icon: LineChart,
@@ -168,7 +145,6 @@ const features = [
     description:
       "Track your entire sales pipeline with real-time visualizations, conversion metrics, and AI-powered forecasting.",
     gradient: "from-emerald-500 to-teal-600",
-    imagePrompt: "Beautiful 3D analytics dashboard with floating charts and metrics, green and teal color scheme",
   },
   {
     icon: Mail,
@@ -176,7 +152,6 @@ const features = [
     description:
       "Generate personalized email sequences and LinkedIn messages that resonate with each prospect's unique profile.",
     gradient: "from-purple-500 to-pink-600",
-    imagePrompt: "Email icons flowing through digital network, automated outreach concept, purple and pink gradients",
   },
   {
     icon: Users,
@@ -184,7 +159,6 @@ const features = [
     description:
       "Seamlessly collaborate with your sales team, share insights, and coordinate outreach efforts in real-time.",
     gradient: "from-indigo-500 to-violet-600",
-    imagePrompt: "Connected team members as glowing avatars in a network, collaboration concept, indigo theme",
   },
 ]
 
@@ -371,12 +345,10 @@ export default function LandingPage() {
             {/* Hero Image - AI Generated */}
             <div className="relative lg:pl-8">
               <div className="relative">
-                <AIGeneratedImage
-                  prompt="Futuristic holographic sales dashboard floating in space, showing analytics charts, lead profiles and AI insights. Glowing neon blue and purple interface with data visualization. Ultra modern, cinematic lighting, 8k quality"
+                <HeroImage
+                  src={stockImages.hero}
                   alt="AI-Powered Sales Dashboard"
                   className="aspect-[4/3] w-full shadow-2xl shadow-indigo-500/20"
-                  priority
-                  gradientIndex={0}
                 />
                 {/* Floating elements */}
                 <div className="absolute -left-4 top-1/4 rounded-xl bg-slate-900/90 backdrop-blur-md p-4 shadow-xl border border-white/10 animate-float">
@@ -444,8 +416,8 @@ export default function LandingPage() {
             </p>
           </div>
           
-          <AIGeneratedImage
-            prompt="Wide cinematic shot of a modern sales team working with futuristic AI interface, holographic screens showing lead data, charts, and email templates floating around them. Purple and blue neon lighting, high-tech office environment, photorealistic"
+          <HeroImage
+            src={stockImages.showcase}
             alt="LeadPulse AI in Action"
             className="aspect-[21/9] w-full shadow-2xl shadow-purple-500/20"
           />
@@ -478,15 +450,13 @@ export default function LandingPage() {
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
                 
-                {/* AI Generated Feature Image */}
+                {/* Feature Image */}
                 <div className="relative h-40 overflow-hidden">
-                  <AIGeneratedImage
-                    prompt={feature.imagePrompt}
+                  <FeatureImage
+                    src={stockImages.features[index]}
                     alt={feature.title}
                     className="h-40 w-full"
-                    gradientIndex={index}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent" />
                 </div>
 
                 <CardHeader className="relative pb-2">
@@ -526,7 +496,6 @@ export default function LandingPage() {
                 description: "Upload a CSV, connect your CRM, or let our AI find prospects matching your ideal customer profile.",
                 icon: Users,
                 gradient: "from-blue-500 to-cyan-500",
-                imagePrompt: "3D isometric illustration of data import interface, files and CRM icons floating, blue holographic style",
               },
               {
                 step: "02",
@@ -534,7 +503,6 @@ export default function LandingPage() {
                 description: "Our AI analyzes each lead, researches company data, and assigns intelligent scores based on buying signals.",
                 icon: BarChart3,
                 gradient: "from-purple-500 to-pink-500",
-                imagePrompt: "AI brain analyzing data with neural networks and scoring graphs, purple and pink glowing elements",
               },
               {
                 step: "03",
@@ -542,7 +510,6 @@ export default function LandingPage() {
                 description: "Generate tailored emails and messages for each prospect, then track engagement and optimize your approach.",
                 icon: Mail,
                 gradient: "from-orange-500 to-red-500",
-                imagePrompt: "Automated email workflow with personalized messages flying to different recipients, warm orange glow",
               },
             ].map((item, index) => (
               <div key={item.step} className="relative group">
@@ -554,12 +521,11 @@ export default function LandingPage() {
                 <div className="relative overflow-hidden rounded-2xl bg-slate-900/50 border border-white/10 p-6 transition-all duration-500 hover:border-white/20">
                   <div className="absolute top-4 right-4 text-6xl font-bold text-white/5">{item.step}</div>
                   
-                  {/* AI Generated Step Image */}
-                  <AIGeneratedImage
-                    prompt={item.imagePrompt}
+                  {/* Step Image */}
+                  <FeatureImage
+                    src={stockImages.howItWorks[index]}
                     alt={item.title}
-                    className="aspect-video w-full mb-6"
-                    gradientIndex={index + 1}
+                    className="aspect-video w-full mb-6 rounded-xl"
                   />
                   
                   <div className={`mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg`}>
@@ -697,14 +663,14 @@ export default function LandingPage() {
       <section className="relative py-24">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-3xl">
-            {/* AI Generated Background */}
+            {/* Background Image */}
             <div className="absolute inset-0">
-              <AIGeneratedImage
-                prompt="Abstract futuristic landscape with flowing data streams, glowing particles, and aurora-like lights. Deep purple and blue color scheme, cinematic wide shot, ethereal atmosphere"
-                alt="CTA Background"
-                className="h-full w-full"
+              <img
+                src={stockImages.cta}
+                alt="Success"
+                className="h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-950/90" />
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/95 via-purple-900/90 to-indigo-900/95" />
             </div>
             
             <div className="relative p-12 md:p-20">
