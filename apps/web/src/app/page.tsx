@@ -280,11 +280,6 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Text */}
             <div className="text-center lg:text-left">
-              <Badge className="mb-6 bg-indigo-500/20 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/30">
-                <Sparkles className="mr-1.5 h-3 w-3" />
-                Powered by GPT-4 & Nano Banana Pro
-              </Badge>
-              
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">
                 Turn Cold Leads into
                 <span className="block mt-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
