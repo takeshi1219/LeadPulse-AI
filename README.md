@@ -5,7 +5,7 @@
 
 LeadPulse AI is a modern, AI-powered B2B sales intelligence platform that helps businesses identify, qualify, and convert high-value prospects.
 
-
+![App Screenshot](https://github.com/takeshi1219/LeadPulse-AI/blob/main/LeadPulseAI.png)
 
 > **📖 [Deployment Guide](./DEPLOYMENT.md)** - Full instructions for deploying to production
 
