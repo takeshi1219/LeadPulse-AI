@@ -24,25 +24,24 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-// Professional stock images for each section (Unsplash - free to use)
-// Using people-focused, bright, high-quality business images
+// Local images stored in public/images folder
 const stockImages = {
-  hero: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=1200&q=80", // Business team celebrating
-  showcase: "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=1200&q=80", // Modern tech workspace
+  hero: "/images/hero.jpg", // Business team celebrating
+  showcase: "/images/showcase.jpg", // Team collaboration
   features: [
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80", // Team working on laptops
-    "https://images.unsplash.com/photo-1535378917042-10a22c95931a?w=800&q=80", // AI robot assistant
-    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80", // Data analytics screen
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", // Charts and graphs
-    "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&q=80", // Person typing email
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80", // Team collaboration
+    "/images/feature-1.jpg", // Team working on laptops
+    "/images/feature-2.jpg", // AI robot assistant
+    "/images/feature-3.jpg", // Data analytics screen
+    "/images/feature-4.jpg", // Charts and graphs
+    "/images/feature-5.jpg", // Person typing email
+    "/images/feature-6.jpg", // Team collaboration
   ],
   howItWorks: [
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80", // Professional woman working
-    "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80", // Team analyzing data  
-    "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80", // Business meeting handshake
+    "/images/step-1.jpg", // Professional woman working
+    "/images/step-2.jpg", // Team analyzing data  
+    "/images/step-3.jpg", // Business meeting handshake
   ],
-  cta: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80", // Happy team celebrating
+  cta: "/images/cta.jpg", // Happy team celebrating
 }
 
 // Image component with loading states and real photos
