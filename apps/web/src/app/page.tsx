@@ -231,7 +231,7 @@ export default function LandingPage() {
                   </Button>
                 </Link>
                 <Link href="#demo">
-                  <Button size="lg" variant="outline" className={`w-full sm:w-auto px-8 ${isDark ? 'border-white/20 hover:bg-white/10' : ''}`}>
+                  <Button size="lg" variant="outline" className={`w-full sm:w-auto px-8 ${isDark ? 'border-white/20 hover:bg-white/10 text-white' : 'border-slate-300 text-slate-900 hover:bg-slate-100'}`}>
                     <Play className="mr-2 h-4 w-4" />
                     Watch Demo
                   </Button>
