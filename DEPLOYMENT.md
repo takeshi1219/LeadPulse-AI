@@ -79,6 +79,9 @@ NEXTAUTH_URL=https://your-app.vercel.app
 # OpenAI (for direct API calls)
 OPENAI_API_KEY=sk-your-actual-openai-api-key
 
+# Gemini API (for AI image generation with Nano Banana Pro)
+GEMINI_API_KEY=your-gemini-api-key
+
 # AI Engine Backend
 AI_ENGINE_URL=https://your-railway-app.up.railway.app
 ```
@@ -158,6 +161,7 @@ AI_ENGINE_URL=https://leadpulse-ai-production.up.railway.app
 | `NEXTAUTH_SECRET` | Random secret for sessions | `openssl rand -base64 32` |
 | `NEXTAUTH_URL` | Your app's URL | `https://app.vercel.app` |
 | `OPENAI_API_KEY` | OpenAI API key | `sk-...` |
+| `GEMINI_API_KEY` | Gemini API key for AI images | `AIzaSy...` |
 | `AI_ENGINE_URL` | Railway backend URL | `https://api.railway.app` |
 
 ### Backend (Railway)

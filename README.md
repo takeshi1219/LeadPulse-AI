@@ -78,6 +78,7 @@ NEXTAUTH_SECRET="your-secret-key"
 NEXTAUTH_URL="http://localhost:3000"
 OPENAI_API_KEY="sk-your-openai-api-key"
 AI_ENGINE_URL="http://localhost:8000"
+GEMINI_API_KEY="your-gemini-api-key"  # For AI image generation with Nano Banana Pro
 ```
 
 ### 3. Initialize Database
