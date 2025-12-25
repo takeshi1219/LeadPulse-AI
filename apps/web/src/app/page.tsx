@@ -280,12 +280,11 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Hero Text */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">
-                Turn Cold Leads into
-                <span className="block mt-2 bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Hot Deals
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
+                <span className="block">Turn Cold Leads into</span>
+                <span className="block bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Hot Deals with AI
                 </span>
-                <span className="block mt-2">with AI</span>
               </h1>
               
               <p className="mt-6 text-lg text-white/60 max-w-xl mx-auto lg:mx-0">
