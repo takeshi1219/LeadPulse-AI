@@ -464,9 +464,10 @@ export default function LandingPage() {
                 <Button
                   className={`w-full ${plan.highlighted
                     ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border-0'
-                    : isDark ? 'bg-white/10 hover:bg-white/20 border-white/20' : ''
+                    : isDark 
+                      ? 'bg-white/10 hover:bg-white/20 border border-white/20 text-white' 
+                      : 'bg-slate-900 hover:bg-slate-800 text-white border-0'
                   }`}
-                  variant={plan.highlighted ? "default" : "outline"}
                 >
                   {plan.cta}
                 </Button>
